@@ -1,0 +1,102 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>WPS在线编辑</title>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="//unpkg.com/promise-polyfill@8.1.3/dist/polyfill.min.js"></script>
+    <script src="~/Scripts/web-office-sdk/web-office-sdk-v1.1.5.umd.js"></script>
+</head>
+<body>
+    <div>
+        <h2><a href="javascript:;" onclick="startWpsOnline()">启动在线编辑</a></h2>
+    </div>
+    <div class="custom-mount" style="width: 100%;height: 900px;"></div>
+</body>
+</html>
+
+<script>
+    function startWpsOnline() {
+        $.ajax({
+            url: "/v1/3rd/wps/genarate",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({
+                fileId: 1000,
+                fileName: "TestFile.docx",
+                fileType: 1,
+                userId: 1000,
+                _w_tokentype: 1
+            }),
+            type: "post",
+            success: function (res) {
+                var wpsUrl = res.Url;
+                console.log(wpsUrl);
+                var wps = showWPS(wpsUrl);
+            }
+        });
+    }
+
+    var timeOut = 300000;
+
+    const refreshToken = () => {
+        // 自身业务处理...
+
+        var token = getToKen("天玺");
+        return {
+            token: token, // 必需
+            timeout: timeOut //  token超时时间 必需
+        }
+    }
+
+    // 支持 HTTPS
+    // 注意：如果通过postMessage来设置token，请在url参数加上_w_tokentype=1
+    function showWPS(url) {
+
+        // 初始化
+        var wps = WebOfficeSDK.config({
+            mount: document.querySelector('.custom-mount'),
+            url: url,
+            refreshToken// 配置超时获取token函数
+        })
+        
+        // 根据自身的业务需求，通过异步请求或者模板输出的方式取得token
+        var token = getToKen("天玺");
+
+        // 设置token
+        wps.setToken({
+            token: token,
+            timeout: timeOut // token超时时间, 可配合refreshToken配置函数使用，当超时前将调用refreshToken
+        })
+        return wps;
+    }
+
+    function getToKen(userName) {
+        var token = "";
+        $.ajax({
+            url: "v1/jwt/encode",
+            contentType: "application/json",
+            dataType: "json",
+            async: false,
+            data: JSON.stringify({
+                username: userName,
+                timeOut:timeOut
+            }),
+            type: "post",
+            success: function (res) {
+                if (res.Success) {
+                    token= res.Token;
+                }
+                
+            }
+        });
+        console.log(token)
+        return token;
+    }
+</script>
