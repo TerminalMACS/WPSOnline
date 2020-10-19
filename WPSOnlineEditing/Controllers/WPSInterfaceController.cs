@@ -150,9 +150,15 @@ namespace WPSOnlineEditing.Controllers
                     result.users = new List<UserModel>();
                     result.users.Add(new UserModel
                     {
-                        id = "518329384",
+                        id = "1000",
                         name = "天玺",
                         avatar_url = $"{ConfigurationManager.AppSettings["WPSTokenUrl"]}/Images/photo1.jpg",
+                    });
+                    result.users.Add(new UserModel
+                    {
+                        id = "1001",
+                        name = "兆丰",
+                        avatar_url = $"{ConfigurationManager.AppSettings["WPSTokenUrl"]}/Images/photo2.jpg"
                     });
                 }
             }

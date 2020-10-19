@@ -10,7 +10,7 @@ namespace WPSOnlineEditing.Common
     public class LogHelper
     {
         private ILog _log4Net = null;
-        private const string DEFAULT_LOGGER_NAME = "123333432";
+        private const string DEFAULT_LOGGER_NAME = "Logger";
         /// <summary>
         /// Prevents a default instance of the <see cref="LogWriter"/> class from being created.
         /// </summary>
