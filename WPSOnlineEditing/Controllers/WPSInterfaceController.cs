@@ -260,7 +260,7 @@ namespace WPSOnlineEditing.Controllers
                     // 创建时间和修改时间默认全是现在
 
                     var now = TimestampHelper.GetCurrentTimestamp();
-                    var fileName = request.FileId == "1000" ? "TestFile.docx" : (request.FileId == "1001" ? "TestFile_v1.docx" : "TestFile_v2.docx");
+                    var fileName = version == 1 ? "TestFile_v1.docx" : (version == 2 ? "TestFile_v2.docx" : "TestFile.docx");
                     string filePath = Server.MapPath($"/Files/{fileName}");
                     result.file = new GetFileResult
                     {

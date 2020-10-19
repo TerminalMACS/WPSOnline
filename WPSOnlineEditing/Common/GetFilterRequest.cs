@@ -29,6 +29,7 @@ namespace WPSOnlineEditing.Common
                 result.code = 10002;
                 result.message = ex.Message;
                 result.Status = false;
+                LogHelper.Default.WriteError(ex.Message, ex);
             }
 
             return result;
@@ -39,6 +40,9 @@ namespace WPSOnlineEditing.Common
             var result = new RequestParam();
             result.FileId = Request.Headers["x-weboffice-file-id"].ToString();
             var queryStr = Request.QueryString.ToString();
+
+            LogHelper.Default.WriteInfo("【queryStr】:" + queryStr);
+
             queryStr = queryStr.StartsWith("?") ? queryStr.Substring(1) : queryStr;
             result.Params = queryStr.Split(new char[1] { '&' }, StringSplitOptions.RemoveEmptyEntries).ToDictionary(p => p.Split('=')[0], p => p.Split('=')[1]);
             if (string.IsNullOrEmpty(queryStr) || string.IsNullOrEmpty(result.FileId))
@@ -55,23 +59,42 @@ namespace WPSOnlineEditing.Common
                 result.message = "用户异常";
                 result.Status = false;
             }
+
+            #region Token判断，目前因为wps回调接口没有带token，所以有些异常
+
             //var token = Request.Headers["x-wps-weboffice-token"];
-            //JWTModel jwtModel = JwtHelper.DecodeJwt(token);
-
-            //LogHelper.Default.WriteInfo($"开始进入验证用户过滤器，用户是：{jwtModel.UserName}，过期时间是：{jwtModel.Expiration}");
-            //if (jwtModel.UserName != "天玺")
+            //if (string.IsNullOrWhiteSpace(token))
             //{
-            //    result.code = 403;
-            //    result.message = "用户名错误";
-            //    result.Status = false;
+            //    token = result.Params["access_token"];
+            //    LogHelper.Default.WriteInfo("token:"+token);
             //}
 
-            //if (jwtModel.Expiration < DateTime.Now)
+            //if (!string.IsNullOrEmpty(token))
             //{
-            //    result.code = 403;
-            //    result.message = "Token已经超时";
-            //    result.Status = false;
+            //    JWTModel jwtModel = JwtHelper.DecodeJwt(token);
+
+            //    LogHelper.Default.WriteInfo($"开始进入验证用户过滤器，用户是：{jwtModel.UserName}，过期时间是：{jwtModel.Expiration}");
+            //    if (jwtModel.UserName != "天玺")
+            //    {
+            //        result.code = 403;
+            //        result.message = "用户名错误";
+            //        result.Status = false;
+            //    }
+
+            //    if (jwtModel.Expiration < DateTime.Now)
+            //    {
+            //        result.code = 403;
+            //        result.message = "Token已经超时";
+            //        result.Status = false;
+            //    }
             //}
+            //else
+            //{
+            //    LogHelper.Default.WriteError("token为空");
+            //}
+
+            #endregion
+
             return result;
         }
     }
