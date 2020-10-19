@@ -16,21 +16,12 @@ namespace WPSOnlineEditing.Common
         public static RequestParam GetParams(HttpRequest Request)
         {
             var result = new RequestParam();
-            try
-            {
-                result = CheckRequestParam(Request);
-                var queryStr = Request.QueryString.ToString();
-                // url参数序列化成Dictionary
-                //queryStr.Split("&")
-                result.Params = queryStr.Split(new char[1] { '&' }, StringSplitOptions.RemoveEmptyEntries).ToDictionary(p => p.Split('=')[0], p => p.Split('=')[1]);
-            }
-            catch (Exception ex)
-            {
-                result.code = 10002;
-                result.message = ex.Message;
-                result.Status = false;
-                LogHelper.Default.WriteError(ex.Message, ex);
-            }
+
+            result = CheckRequestParam(Request);
+            var queryStr = Request.QueryString.ToString();
+            // url参数序列化成Dictionary
+            //queryStr.Split("&")
+            //result.Params = queryStr.Split(new char[1] { '&' }, StringSplitOptions.RemoveEmptyEntries).ToDictionary(p => p.Split('=')[0], p => p.Split('=')[1]);
 
             return result;
         }
@@ -40,23 +31,23 @@ namespace WPSOnlineEditing.Common
             var result = new RequestParam();
             result.FileId = Request.Headers["x-weboffice-file-id"].ToString();
             var queryStr = Request.QueryString.ToString();
-
+            Enumerator enumerator = new Enumerator();
             LogHelper.Default.WriteInfo("【queryStr】:" + queryStr);
 
             queryStr = queryStr.StartsWith("?") ? queryStr.Substring(1) : queryStr;
             result.Params = queryStr.Split(new char[1] { '&' }, StringSplitOptions.RemoveEmptyEntries).ToDictionary(p => p.Split('=')[0], p => p.Split('=')[1]);
             if (string.IsNullOrEmpty(queryStr) || string.IsNullOrEmpty(result.FileId))
             {
-                result.code = 10003;
-                result.message = "参数错误，无法打开文件";
+                result.code = (int)Enumerator.ErrorCode.无法打开文件;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.无法打开文件);
                 result.Status = false;
             }
 
             // 此处判断是否传递了自定义的 _w_userId 参数，如果不需要此参数的话可以注释该判断
             if (!result.Params.ContainsKey("_w_userId"))
             {
-                result.code = 10004;
-                result.message = "用户异常";
+                result.code = (int)Enumerator.ErrorCode.用户为空;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.用户为空);
                 result.Status = false;
             }
 

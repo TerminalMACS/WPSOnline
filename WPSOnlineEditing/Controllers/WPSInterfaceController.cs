@@ -119,8 +119,9 @@ namespace WPSOnlineEditing.Controllers
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
 
             _log.WriteInfo("请求接口【file/info】完成,返回数据：" + JsonConvert.SerializeObject(result));
@@ -164,8 +165,9 @@ namespace WPSOnlineEditing.Controllers
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
             _log.WriteInfo("请求接口【user/info】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result);
@@ -188,8 +190,9 @@ namespace WPSOnlineEditing.Controllers
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
             _log.WriteInfo("请求接口【file/online】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result);
@@ -234,8 +237,9 @@ namespace WPSOnlineEditing.Controllers
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
             _log.WriteInfo("请求接口【file/save】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result);
@@ -284,8 +288,9 @@ namespace WPSOnlineEditing.Controllers
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
             _log.WriteInfo("请求接口【file/version】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -299,11 +304,12 @@ namespace WPSOnlineEditing.Controllers
         [Route("file/rename"), HttpPut]
         public JsonResult RenameFile(RenameFileRequest body)
         {
-            _log.WriteInfo("开始请求接口【file/rename】");
+            _log.WriteInfo("开始请求接口【file/rename】,请求参数：" + JsonConvert.SerializeObject(body));
             WPSBaseModel result = new WPSBaseModel();
             try
             {
                 var request = GetFilterRequest.GetParams(HttpContext.ApplicationInstance.Request);
+
                 if (!request.Status)
                 {
                     result.code = request.code;
@@ -311,14 +317,32 @@ namespace WPSOnlineEditing.Controllers
                 }
                 else
                 {
+                    #region 在测试环境暂时不要将此块房开，由于上面获取文件名是固定的，成功更改文件成功后，不能打开文件
+                    //var fileName = request.FileId == "1000" ? "TestFile.docx" : (request.FileId == "1001" ? "TestFile_v1.docx" : "TestFile_v2.docx");
+
+                    ////原文件的物理路径
+                    //string filePath = Server.MapPath($"/Files/{fileName}");
+
+                    //// 移动到的新位置的物理路径(如果还是当前文件夹, 则会重命名文件)
+                    //string fileTargetPath = Server.MapPath($"/Files/{body.name}");
+
+                    ////判断到的新地址是否存在重命名文件
+                    //if (System.IO.File.Exists(fileTargetPath))
+                    //{
+                    //    result.code = (int)Enumerator.ErrorCode.文件已存在;
+                    //    result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.文件已存在);
+                    //}
+                    //System.IO.File.Move(filePath, fileTargetPath);//2个文件在不同目录则是移动,如果在相同目录下则是重命名
+                    #endregion
                     result.code = 200;
                     result.message = "success";
                 }
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
             _log.WriteInfo("请求接口【file/rename】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result);
@@ -402,8 +426,9 @@ namespace WPSOnlineEditing.Controllers
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
 
             _log.WriteInfo("请求接口【file/history】完成,返回数据：" + JsonConvert.SerializeObject(result));
@@ -429,11 +454,6 @@ namespace WPSOnlineEditing.Controllers
                 }
                 else
                 {
-                    if (!filterRequest.Status)
-                    {
-                        return Json(new CreateWPSFileResult { code = filterRequest.code, message = filterRequest.message });
-                    }
-
                     HttpFileCollection files = HttpContext.ApplicationInstance.Request.Files;
                     string fileName = Guid.NewGuid().ToString("N") + ".docx";
                     foreach (string key in files.AllKeys)
@@ -449,8 +469,9 @@ namespace WPSOnlineEditing.Controllers
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
 
             _log.WriteInfo("请求接口【file/new】完成,返回数据：" + JsonConvert.SerializeObject(result));
@@ -483,8 +504,9 @@ namespace WPSOnlineEditing.Controllers
             }
             catch (Exception ex)
             {
-                result.code = 10001;
-                result.message = ex.Message;
+                _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
+                result.code = (int)Enumerator.ErrorCode.系统异常;
+                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
             }
 
             _log.WriteInfo("请求接口【onnotify】完成,返回数据：" + JsonConvert.SerializeObject(result));

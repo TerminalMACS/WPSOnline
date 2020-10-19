@@ -126,6 +126,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Common\EnumExtension.cs" />
     <Compile Include="Common\FileHelper.cs" />
     <Compile Include="Common\GetFilterRequest.cs" />
     <Compile Include="Common\JwtHelper.cs" />
@@ -141,6 +142,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mode\DataResult.cs" />
+    <Compile Include="Mode\Enumerator.cs" />
     <Compile Include="Mode\JWTModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mode\CreateWPSFileRequest.cs" />
