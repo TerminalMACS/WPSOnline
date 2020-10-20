@@ -38,16 +38,18 @@ namespace WPSOnlineEditing.Common
             result.Params = queryStr.Split(new char[1] { '&' }, StringSplitOptions.RemoveEmptyEntries).ToDictionary(p => p.Split('=')[0], p => p.Split('=')[1]);
             if (string.IsNullOrEmpty(queryStr) || string.IsNullOrEmpty(result.FileId))
             {
-                result.code = (int)Enumerator.ErrorCode.无法打开文件;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.无法打开文件);
+                result.code = (int)Enumerator.ErrorCode.NotExists;
+                result.message = Enumerator.ErrorCode.NotExists.ToString();
+                result.details=result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.NotExists);
                 result.Status = false;
             }
 
             // 此处判断是否传递了自定义的 _w_userId 参数，如果不需要此参数的话可以注释该判断
             if (!result.Params.ContainsKey("_w_userId"))
             {
-                result.code = (int)Enumerator.ErrorCode.用户为空;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.用户为空);
+                result.code = (int)Enumerator.ErrorCode.PermissionDenied;
+                result.message = Enumerator.ErrorCode.PermissionDenied.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.PermissionDenied);
                 result.Status = false;
             }
 

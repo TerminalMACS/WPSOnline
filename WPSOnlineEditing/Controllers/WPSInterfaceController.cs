@@ -63,6 +63,8 @@ namespace WPSOnlineEditing.Controllers
                 {
                     result.code = request.code;
                     result.message = request.message;
+                    result.details = request.details;
+                    result.hint = request.hint;
 
                 }
                 else
@@ -120,8 +122,9 @@ namespace WPSOnlineEditing.Controllers
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
 
             _log.WriteInfo("请求接口【file/info】完成,返回数据：" + JsonConvert.SerializeObject(result));
@@ -145,6 +148,8 @@ namespace WPSOnlineEditing.Controllers
                 {
                     result.code = request.code;
                     result.message = request.message;
+                    result.details = request.details;
+                    result.hint = request.hint;
                 }
                 else
                 {
@@ -166,8 +171,9 @@ namespace WPSOnlineEditing.Controllers
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
             _log.WriteInfo("请求接口【user/info】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result);
@@ -191,8 +197,9 @@ namespace WPSOnlineEditing.Controllers
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
             _log.WriteInfo("请求接口【file/online】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result);
@@ -215,6 +222,8 @@ namespace WPSOnlineEditing.Controllers
                 {
                     result.code = request.code;
                     result.message = request.message;
+                    result.details = request.details;
+                    result.hint = request.hint;
                 }
                 else
                 {
@@ -238,8 +247,9 @@ namespace WPSOnlineEditing.Controllers
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
             _log.WriteInfo("请求接口【file/save】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result);
@@ -262,6 +272,8 @@ namespace WPSOnlineEditing.Controllers
                 {
                     result.code = request.code;
                     result.message = request.message;
+                    result.details = request.details;
+                    result.hint = request.hint;
                 }
                 else
                 {
@@ -289,8 +301,9 @@ namespace WPSOnlineEditing.Controllers
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
             _log.WriteInfo("请求接口【file/version】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -314,6 +327,8 @@ namespace WPSOnlineEditing.Controllers
                 {
                     result.code = request.code;
                     result.message = request.message;
+                    result.details = request.details;
+                    result.hint = request.hint;
                 }
                 else
                 {
@@ -334,15 +349,15 @@ namespace WPSOnlineEditing.Controllers
                     //}
                     //System.IO.File.Move(filePath, fileTargetPath);//2个文件在不同目录则是移动,如果在相同目录下则是重命名
                     #endregion
-                    result.code = 200;
-                    result.message = "success";
+                    result.code = (int)Enumerator.ErrorCode.OK;
                 }
             }
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
             _log.WriteInfo("请求接口【file/rename】完成,返回数据：" + JsonConvert.SerializeObject(result));
             return Json(result);
@@ -365,6 +380,8 @@ namespace WPSOnlineEditing.Controllers
                 {
                     result.code = request.code;
                     result.message = request.message;
+                    result.details = request.details;
+                    result.hint = request.hint;
                 }
                 else
                 {
@@ -427,8 +444,9 @@ namespace WPSOnlineEditing.Controllers
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
 
             _log.WriteInfo("请求接口【file/history】完成,返回数据：" + JsonConvert.SerializeObject(result));
@@ -451,6 +469,8 @@ namespace WPSOnlineEditing.Controllers
                 {
                     result.code = filterRequest.code;
                     result.message = filterRequest.message;
+                    result.details = filterRequest.details;
+                    result.hint = filterRequest.hint;
                 }
                 else
                 {
@@ -470,8 +490,9 @@ namespace WPSOnlineEditing.Controllers
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
 
             _log.WriteInfo("请求接口【file/new】完成,返回数据：" + JsonConvert.SerializeObject(result));
@@ -495,18 +516,20 @@ namespace WPSOnlineEditing.Controllers
                 {
                     result.code = request.code;
                     result.message = request.message;
+                    result.details = request.details;
+                    result.hint = request.hint;
                 }
                 else
                 {
-                    result.code = 200;
-                    result.message = "success";
+                    result.code = (int)Enumerator.ErrorCode.OK;
                 }
             }
             catch (Exception ex)
             {
                 _log.WriteError("【系统异常】-【" + ex.Message + "】", ex);
-                result.code = (int)Enumerator.ErrorCode.系统异常;
-                result.message = EnumExtension.GetDescription(Enumerator.ErrorCode.系统异常);
+                result.code = (int)Enumerator.ErrorCode.ServerError;
+                result.message = Enumerator.ErrorCode.ServerError.ToString();
+                result.details = result.hint = EnumExtension.GetDescription(Enumerator.ErrorCode.ServerError);
             }
 
             _log.WriteInfo("请求接口【onnotify】完成,返回数据：" + JsonConvert.SerializeObject(result));
